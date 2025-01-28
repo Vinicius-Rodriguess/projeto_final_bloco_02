@@ -1,18 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Produtos } from '../entities/produtos.entity';
+import { Produto } from '../entities/produtos.entity';
 import { DeleteResult, ILike, Repository } from 'typeorm';
 import { CategoriaService } from '../../categoria/services/categoria.service';
+import { CreateProdutoDto } from '../dtos/create-produto.dto';
+import { UpdateProdutoDto } from '../dtos/update-produto.dto';
 
 @Injectable()
 export class ProdutosService {
   constructor(
-    @InjectRepository(Produtos)
-    private readonly produtosRepository: Repository<Produtos>,
+    @InjectRepository(Produto)
+    private readonly produtosRepository: Repository<Produto>,
     private readonly categoriaService: CategoriaService,
   ) {}
 
-  async findAll(): Promise<Produtos[]> {
+  async findAll(): Promise<Produto[]> {
     return this.produtosRepository.find({
       relations: {
         categoria: true,
@@ -20,7 +22,7 @@ export class ProdutosService {
     });
   }
 
-  async findById(id: number): Promise<Produtos> {
+  async findById(id: number): Promise<Produto> {
     const postagem = await this.produtosRepository.findOne({
       where: { id },
       relations: {
@@ -31,7 +33,7 @@ export class ProdutosService {
     return postagem;
   }
 
-  async findByName(nome: string): Promise<Produtos[]> {
+  async findByName(nome: string): Promise<Produto[]> {
     return this.produtosRepository.find({
       where: {
         nome: ILike(`%${nome}%`),
@@ -42,15 +44,15 @@ export class ProdutosService {
     });
   }
 
-  async create(produtos: Produtos): Promise<Produtos> {
-    await this.categoriaService.findById(produtos.categoria.id);
-    return await this.produtosRepository.save(produtos);
+  async create(produto: CreateProdutoDto): Promise<Produto> {
+    await this.categoriaService.findById(produto.categoria.id);
+    return await this.produtosRepository.save(produto);
   }
 
-  async update(produtos: Produtos): Promise<Produtos> {
-    await this.findById(produtos.id);
-    await this.categoriaService.findById(produtos.categoria.id);
-    return await this.produtosRepository.save(produtos);
+  async update(produto: UpdateProdutoDto): Promise<Produto> {
+    await this.findById(produto.id);
+    await this.categoriaService.findById(produto.categoria.id);
+    return await this.produtosRepository.save(produto);
   }
 
   async delete(id: number): Promise<DeleteResult> {

@@ -12,6 +12,8 @@ import {
 } from '@nestjs/common';
 import { CategoriaService } from '../services/categoria.service';
 import { Categoria } from '../entities/categoria.entity';
+import { CreateCategoriaDto } from '../dtos/create-categoria.dto';
+import { UpdateCategoriaDto } from '../dtos/update-categoria.dto';
 
 @Controller('/categorias')
 export class CategoriaController {
@@ -37,13 +39,13 @@ export class CategoriaController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() categoria: Categoria): Promise<Categoria> {
+  create(@Body() categoria: CreateCategoriaDto): Promise<Categoria> {
     return this.categoriaService.create(categoria);
   }
 
   @Put()
   @HttpCode(HttpStatus.OK)
-  update(@Body() categoria: Categoria): Promise<Categoria> {
+  update(@Body() categoria: UpdateCategoriaDto): Promise<Categoria> {
     return this.categoriaService.update(categoria);
   }
 

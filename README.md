@@ -1,99 +1,133 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# **Gerenciamento de Categorias e Produtos**
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+![Logo Placeholder](https://via.placeholder.com/200)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 1. Descrição
 
-## Description
+O projeto é uma API desenvolvida em **TypeScript** utilizando o **NestJS** como framework back-end.  
+O objetivo principal é gerenciar **categorias** e **produtos**, permitindo que os usuários possam criar, visualizar, atualizar e excluir informações. A API é estruturada de forma modular e utiliza **TypeORM** para a manipulação do banco de dados relacional **MySQL**.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## 2. Sobre esta API
 
-```bash
-$ npm install
-```
+A API foi projetada para facilitar o gerenciamento de produtos e categorias, fornecendo endpoints REST para operações CRUD. Além disso, implementa boas práticas de desenvolvimento, como a separação de responsabilidades entre entidades, controladores e serviços.
 
-## Compile and run the project
+### 2.1. Principais Funcionalidades
 
-```bash
-# development
-$ npm run start
+1. **Gerenciamento de Categorias**  
+   Os endpoints permitem:  
+   - Listar todas as categorias.  
+   - Buscar uma categoria pelo ID ou tipo.  
+   - Criar, atualizar e excluir categorias.
 
-# watch mode
-$ npm run start:dev
+2. **Gerenciamento de Produtos**  
+   Os endpoints permitem:  
+   - Listar todos os produtos.  
+   - Buscar um produto pelo ID ou nome.  
+   - Criar, atualizar e excluir produtos.  
+   - Relacionar produtos com categorias.
 
-# production mode
-$ npm run start:prod
-```
+---
 
-## Run tests
+## 3. Diagrama de Classes
 
-```bash
-# unit tests
-$ npm run test
+### Classes Principais:
 
-# e2e tests
-$ npm run test:e2e
+#### Categoria
+- **Tabela**: `tb_categorias`  
+- **Atributos**:  
+  - `id`: Identificador único da categoria.  
+  - `tipo`: Tipo da categoria (máximo de 1000 caracteres).  
+  - **Relações**:  
+    - `produtos`: Associação com a entidade `Produto`.  
 
-# test coverage
-$ npm run test:cov
-```
+#### Produto
+- **Tabela**: `tb_produtos`  
+- **Atributos**:  
+  - `id`: Identificador único do produto.  
+  - `nome`: Nome do produto (máximo de 255 caracteres).  
+  - `preco`: Preço do produto (armazenado como decimal).  
+  - `foto`: URL da imagem do produto.  
+  - **Relações**:  
+    - `categoria`: Associação com a entidade `Categoria`.  
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 4. Endpoints Disponíveis
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 4.1. Categoria  
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+#### **GET /categorias**  
+Lista todas as categorias.  
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+#### **GET /categorias/:id**  
+Busca uma categoria pelo ID.  
 
-## Resources
+#### **GET /categorias/tipo/:tipo**  
+Busca categorias pelo tipo.  
 
-Check out a few resources that may come in handy when working with NestJS:
+#### **POST /categorias**  
+Cria uma nova categoria.  
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+#### **PUT /categorias**  
+Atualiza uma categoria existente.  
 
-## Support
+#### **DELETE /categorias/:id**  
+Exclui uma categoria pelo ID.  
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+### 4.2. Produto  
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+#### **GET /produtos**  
+Lista todos os produtos.  
 
-## License
+#### **GET /produtos/:id**  
+Busca um produto pelo ID.  
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+#### **GET /produtos/nome/:nome**  
+Busca produtos pelo nome.  
+
+#### **POST /produtos**  
+Cria um novo produto.  
+
+#### **PUT /produtos**  
+Atualiza um produto existente.  
+
+#### **DELETE /produtos/:id**  
+Exclui um produto pelo ID.  
+
+---
+
+## 5. Tecnologias Utilizadas
+
+| Item                          | Descrição  |
+| ----------------------------- | ---------- |
+| **Servidor**                  | Node.js    |
+| **Linguagem de programação**  | TypeScript |
+| **Framework**                 | NestJS     |
+| **ORM**                       | TypeORM    |
+| **Banco de dados Relacional** | MySQL      |
+
+---
+
+## 6. Configuração e Execução
+
+1. Clone o repositório.  
+2. Instale as dependências:  
+   ```bash
+   npm install
+   ```  
+3. Configure as variáveis de ambiente criando um arquivo `.env` com as seguintes chaves:  
+   ```
+   DB_HOST=seu_host
+   DB_PORT=3306
+   DB_USERNAME=seu_usuario
+   DB_PASSWORD=sua_senha
+   DB_DATABASE=seu_banco
+   ```  
+4. Execute a aplicação em modo de desenvolvimento:  
+   ```bash
+   npm run start:dev
+   

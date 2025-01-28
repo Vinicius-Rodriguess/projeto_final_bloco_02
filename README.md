@@ -1,7 +1,5 @@
 # **Gerenciamento de Categorias e Produtos**
 
-![Logo Placeholder](https://via.placeholder.com/200)
-
 ## 1. Descrição
 
 O projeto é uma API desenvolvida em **TypeScript** utilizando o **NestJS** como framework back-end.  

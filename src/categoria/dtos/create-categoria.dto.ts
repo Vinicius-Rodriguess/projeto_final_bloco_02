@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { Produto } from '../../produtos/entities/produtos.entity';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsMongoId } from 'class-validator';
 
 export class CreateCategoriaDto {
   @IsNotEmpty()
@@ -7,5 +7,7 @@ export class CreateCategoriaDto {
   tipo: string;
 
   @IsOptional()
-  produtos?: Produto[];
+  @IsArray()
+  @IsMongoId({ each: true })
+  produtos?: string[];
 }

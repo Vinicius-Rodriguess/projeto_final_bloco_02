@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -27,7 +26,7 @@ export class ProdutosController {
 
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  findById(@Param('id', ParseIntPipe) id: number): Promise<Produto> {
+  findById(@Param('id') id: string): Promise<Produto> {
     return this.produtosService.findById(id);
   }
 
@@ -51,7 +50,7 @@ export class ProdutosController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id') id: string) {
     return this.produtosService.delete(id);
   }
 }

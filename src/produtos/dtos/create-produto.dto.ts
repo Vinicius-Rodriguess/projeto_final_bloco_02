@@ -1,5 +1,10 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
-import { Categoria } from '../../categoria/entities/categoria.entity';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  IsString,
+  IsMongoId,
+} from 'class-validator';
 
 export class CreateProdutoDto {
   @IsString()
@@ -16,5 +21,6 @@ export class CreateProdutoDto {
   foto: string;
 
   @IsNotEmpty()
-  categoria: Categoria;
+  @IsMongoId()
+  categoria: string;
 }

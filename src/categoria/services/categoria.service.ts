@@ -1,58 +1,57 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Categoria } from '../entities/categoria.entity';
-import { DeleteResult, ILike, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateCategoriaDto } from '../dtos/create-categoria.dto';
 import { UpdateCategoriaDto } from '../dtos/update-categoria.dto';
+import { Categoria } from '../entities/categoria.entity';
 
 @Injectable()
 export class CategoriaService {
   constructor(
-    @InjectRepository(Categoria)
-    private readonly categoriaRepository: Repository<Categoria>,
+    @InjectModel(Categoria.name)
+    private readonly categoriaModel: Model<Categoria>,
   ) {}
 
   async findAll(): Promise<Categoria[]> {
-    return this.categoriaRepository.find({
-      relations: {
-        produtos: true,
-      },
-    });
+    return this.categoriaModel.find().populate('produtos').exec();
   }
 
-  async findById(id: number): Promise<Categoria> {
-    const tema = await this.categoriaRepository.findOne({
-      where: { id },
-      relations: {
-        produtos: true,
-      },
-    });
-    if (!tema) throw new NotFoundException('Categoria não encontrada.');
-    return tema;
+  async findById(id: string): Promise<Categoria> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException('ID inválido');
+    }
+
+    const categoria = await this.categoriaModel
+      .findById(id)
+      .populate('produtos')
+      .exec();
+    if (!categoria) throw new NotFoundException('Categoria não encontrada.');
+    return categoria;
   }
 
   async findByType(tipo: string): Promise<Categoria[]> {
-    return this.categoriaRepository.find({
-      where: {
-        tipo: ILike(`%${tipo}%`),
-      },
-      relations: {
-        produtos: true,
-      },
-    });
+    return this.categoriaModel
+      .find({ tipo: { $regex: tipo, $options: 'i' } })
+      .populate('produtos')
+      .exec();
   }
 
-  async create(categoria: CreateCategoriaDto): Promise<Categoria> {
-    return await this.categoriaRepository.save(categoria);
+  async create(createCategoriaDto: CreateCategoriaDto): Promise<Categoria> {
+    const createdCategoria = new this.categoriaModel(createCategoriaDto);
+    return createdCategoria.save();
   }
 
-  async update(categoria: UpdateCategoriaDto): Promise<Categoria> {
-    await this.findById(categoria.id);
-    return await this.categoriaRepository.save(categoria);
-  }
+  async update(updateCategoriaDto: UpdateCategoriaDto): Promise<Categoria> {
+    const { id, ...updateData } = updateCategoriaDto;
 
-  async delete(id: number): Promise<DeleteResult> {
     await this.findById(id);
-    return this.categoriaRepository.delete(id);
+
+    await this.categoriaModel.updateOne({ _id: id }, updateData).exec();
+    return this.findById(id);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.findById(id);
+    await this.categoriaModel.deleteOne({ _id: id }).exec();
   }
 }

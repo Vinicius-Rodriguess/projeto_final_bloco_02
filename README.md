@@ -1,131 +1,125 @@
-# **Gerenciamento de Categorias e Produtos**
+# 📝 **Back-End Gerenciamento de Categorias e Produtos**
 
-## 1. Descrição
-
-O projeto é uma API desenvolvida em **TypeScript** utilizando o **NestJS** como framework back-end.  
-O objetivo principal é gerenciar **categorias** e **produtos**, permitindo que os usuários possam criar, visualizar, atualizar e excluir informações. A API é estruturada de forma modular e utiliza **TypeORM** para a manipulação do banco de dados relacional **MySQL**.
+Este projeto é uma API back-end para gerenciamento de **categorias** e **produtos**. Desenvolvido com **NestJS**, **TypeScript** e **Mongoose**, ele oferece uma estrutura escalável para operações **REST** com foco em modularidade e boas práticas de desenvolvimento.
 
 ---
 
-## 2. Sobre esta API
+## 🚀 **Funcionalidades**
 
-A API foi projetada para facilitar o gerenciamento de produtos e categorias, fornecendo endpoints REST para operações CRUD. Além disso, implementa boas práticas de desenvolvimento, como a separação de responsabilidades entre entidades, controladores e serviços.
+### **Back-End**
 
-### 2.1. Principais Funcionalidades
-
-1. **Gerenciamento de Categorias**  
-   Os endpoints permitem:  
-   - Listar todas as categorias.  
-   - Buscar uma categoria pelo ID ou tipo.  
-   - Criar, atualizar e excluir categorias.
-
-2. **Gerenciamento de Produtos**  
-   Os endpoints permitem:  
-   - Listar todos os produtos.  
-   - Buscar um produto pelo ID ou nome.  
-   - Criar, atualizar e excluir produtos.  
-   - Relacionar produtos com categorias.
+- API REST para gerenciamento completo de categorias e produtos.
+- Conexão com banco de dados **MongoDB** via **Mongoose**.
+- Estrutura modular com separação entre camadas (controllers, services, schemas).
+- Endpoints de busca por diferentes atributos (nome, tipo, ID).
+- Relacionamento entre produtos e categorias.
+- Validações de dados com decorators do NestJS.
 
 ---
 
-## 3. Diagrama de Classes
+## 🛠️ **Tecnologias Utilizadas**
 
-### Classes Principais:
-
-#### Categoria
-- **Tabela**: `tb_categorias`  
-- **Atributos**:  
-  - `id`: Identificador único da categoria.  
-  - `tipo`: Tipo da categoria (máximo de 1000 caracteres).  
-  - **Relações**:  
-    - `produtos`: Associação com a entidade `Produto`.  
-
-#### Produto
-- **Tabela**: `tb_produtos`  
-- **Atributos**:  
-  - `id`: Identificador único do produto.  
-  - `nome`: Nome do produto (máximo de 255 caracteres).  
-  - `preco`: Preço do produto (armazenado como decimal).  
-  - `foto`: URL da imagem do produto.  
-  - **Relações**:  
-    - `categoria`: Associação com a entidade `Categoria`.  
+- **NestJS**: Framework para desenvolvimento back-end em TypeScript.
+- **TypeScript**: Tipagem estática que aumenta a robustez do código.
+- **MongoDB**: Banco de dados NoSQL.
+- **Mongoose**: ODM para interação com MongoDB.
+- **Dotenv**: Gerenciamento de variáveis de ambiente.
+- **Class-validator** e **Class-transformer**: Validações e transformações de dados.
 
 ---
 
-## 4. Endpoints Disponíveis
+## 🔧 **Como o Sistema Funciona**
 
-### 4.1. Categoria  
+1. **Categorias**
 
-#### **GET /categorias**  
-Lista todas as categorias.  
+   - Criar, listar, atualizar, buscar por ID ou tipo, e excluir categorias.
 
-#### **GET /categorias/:id**  
-Busca uma categoria pelo ID.  
+2. **Produtos**
 
-#### **GET /categorias/tipo/:tipo**  
-Busca categorias pelo tipo.  
+   - Criar, listar, atualizar, buscar por ID ou nome, e excluir produtos.
+   - Associação entre produto e categoria.
 
-#### **POST /categorias**  
-Cria uma nova categoria.  
+3. **Arquitetura Limpa**
 
-#### **PUT /categorias**  
-Atualiza uma categoria existente.  
+   - Separação de responsabilidades com estrutura modular para escalabilidade.
 
-#### **DELETE /categorias/:id**  
-Exclui uma categoria pelo ID.  
+4. **Persistência de Dados**
+   - Toda a informação é armazenada no MongoDB com schemas definidos por Mongoose.
 
 ---
 
-### 4.2. Produto  
+## 📋 **Requisitos**
 
-#### **GET /produtos**  
-Lista todos os produtos.  
-
-#### **GET /produtos/:id**  
-Busca um produto pelo ID.  
-
-#### **GET /produtos/nome/:nome**  
-Busca produtos pelo nome.  
-
-#### **POST /produtos**  
-Cria um novo produto.  
-
-#### **PUT /produtos**  
-Atualiza um produto existente.  
-
-#### **DELETE /produtos/:id**  
-Exclui um produto pelo ID.  
+- **Node.js** (v14 ou superior)
+- **MongoDB** (local ou remoto)
 
 ---
 
-## 5. Tecnologias Utilizadas
+## 🔧 **Como Configurar o Projeto**
 
-| Item                          | Descrição  |
-| ----------------------------- | ---------- |
-| **Servidor**                  | Node.js    |
-| **Linguagem de programação**  | TypeScript |
-| **Framework**                 | NestJS     |
-| **ORM**                       | TypeORM    |
-| **Banco de dados Relacional** | MySQL      |
+1. Clone este repositório:  
 
----
+   git clone https://github.com/Vinicius-Rodriguess/product-category-api.git  
 
-## 6. Configuração e Execução
+   cd product-category-api
 
-1. Clone o repositório.  
 2. Instale as dependências:  
-   ```bash
+
    npm install
-   ```  
-3. Configure as variáveis de ambiente criando um arquivo `.env` com as seguintes chaves:  
-   ```
-   DB_HOST=seu_host
-   DB_PORT=3306
-   DB_USERNAME=seu_usuario
-   DB_PASSWORD=sua_senha
-   DB_DATABASE=seu_banco
-   ```  
-4. Execute a aplicação em modo de desenvolvimento:  
-   ```bash
+
+3. Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:  
+
+   MONGO_URI=mongodb://localhost:27017/nome-do-banco
+
+4. Inicie o servidor:  
+
    npm run start:dev
-   
+
+---
+
+## 🖥️ **Exemplo de Uso**
+
+### **Categorias**
+
+- GET /categorias → Lista todas as categorias
+- GET /categorias/:id → Busca uma categoria pelo ID
+- GET /categorias/tipo/:tipo → Busca categorias por tipo
+- POST /categorias → Cria uma nova categoria
+- PUT /categorias → Atualiza uma categoria
+- DELETE /categorias/:id → Remove uma categoria
+
+### **Produtos**
+
+- GET /produtos → Lista todos os produtos
+- GET /produtos/:id → Busca um produto pelo ID
+- GET /produtos/nome/:nome → Busca produtos pelo nome
+- POST /produtos → Cria um novo produto
+- PUT /produtos → Atualiza um produto existente
+- DELETE /produtos/:id → Exclui um produto
+
+---
+
+## 📌 **Limitações**
+
+- Requer MongoDB configurado e rodando.
+- Sem autenticação implementada (pode ser adicionada futuramente).
+- A documentação com Swagger ainda não foi implementada.
+
+---
+
+## ✅ **Melhorias Futuras**
+
+- Implementar autenticação JWT.
+- Adicionar Swagger para documentação automática.
+- Adicionar testes unitários com Jest.
+- Paginação e ordenação nos endpoints de listagem.
+- Upload de imagem para produtos.
+
+---
+
+## 👨‍💻 **Autor**
+
+**Vinicius Rodrigues**
+
+- GitHub: [Vinicius-Rodriguess](https://github.com/Vinicius-Rodriguess)
+- Email: rodrigues.vini.2004@gmail.com

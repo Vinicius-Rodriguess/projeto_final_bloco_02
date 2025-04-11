@@ -1,28 +1,20 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 import { Categoria } from '../../categoria/entities/categoria.entity';
-import { NumericTransformer } from '../../util/numerictransformer';
 
-@Entity({ name: 'tb_produtos' })
-export class Produto {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ length: 255, nullable: false })
+@Schema({ collection: 'produtos', timestamps: true })
+export class Produto extends Document {
+  @Prop({ required: true, maxlength: 255 })
   nome: string;
 
-  @Column({
-    type: 'decimal',
-    precision: 10,
-    scale: 2,
-    transformer: new NumericTransformer(),
-  })
+  @Prop({ required: true, type: Number })
   preco: number;
 
-  @Column({ length: 5000, nullable: false })
+  @Prop({ required: true, maxlength: 5000 })
   foto: string;
 
-  @ManyToOne(() => Categoria, (categoria) => categoria.produtos, {
-    onDelete: 'CASCADE',
-  })
-  categoria: Categoria;
+  @Prop({ type: Types.ObjectId, ref: 'Categoria', required: true })
+  categoria: Types.ObjectId | Categoria;
 }
+
+export const ProdutoSchema = SchemaFactory.createForClass(Produto);
